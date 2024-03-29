@@ -46,8 +46,12 @@ jobs:
         docker tag asg:${{ steps.generate_tag.outputs.image_tag }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
 
-    - name: Update Deployment YAML
+    - name: Get Latest Image Tag from ACR
+      id: get_image_tag
       run: |
-       # sed -i "s/image:[^:]*$/image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}/g" deployment.yaml
-        sed -i'' "s|image:[^:]*$|image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}|g" deployment.yaml
-   
+        TAG=$(az acr repository show-tags --name test0107 --repository asg --orderby time_desc --top 1 --output tsv)
+        echo "::set-output name=image_tag::$TAG"
+
+    - name: Update deployment.yaml
+      run: |
+        sed -i'' "s|image:[^:]*$|image: test0107.azurecr.io/asg:${{ steps.get_image_tag.outputs.image_tag }}|g" deployment.yaml
