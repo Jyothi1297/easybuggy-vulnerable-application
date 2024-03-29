@@ -26,9 +26,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Generate Image Tag
-      id: generate_tag
-      run: echo "::set-output name=image_tag::$(git rev-parse --short HEAD)"
 
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
@@ -51,6 +48,9 @@ jobs:
    #   run: |
    #     TAG=$(az acr repository show-tags --name test0107 --repository asg --orderby time_desc --top 1 --output tsv)
    #     echo "::set-output name=image_tag::$TAG"
+    - name: Generate Image Tag
+      id: generate_tag
+      run: echo "::set-output name=image_tag::$(git rev-parse --short HEAD)"
 
     - name: Update deployment.yaml
       run: |
