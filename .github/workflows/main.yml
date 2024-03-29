@@ -37,6 +37,6 @@ jobs:
     
     - name: Build Docker image
       run: |
-        docker build -t test0107.azurecr.io/asg:latest:${{ github.sha }} .
-        docker push test0107.azurecr.io/asg:latest:${{ github.sha }}
+        docker build -t test0107.azurecr.io/asg:${{ github.sha }} .
+        docker push test0107.azurecr.io/asg:${{ github.sha }}
          tags: '$(tag)'
