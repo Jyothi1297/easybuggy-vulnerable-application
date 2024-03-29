@@ -48,6 +48,6 @@ jobs:
 
     - name: Update Deployment YAML
       run: |
-        sed -i "s/image:[^:]*$/image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}/g" deployment.yaml
-        
+       # sed -i "s/image:[^:]*$/image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}/g" deployment.yaml
+        sed -i'' "s|image:[^:]*$|image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}|g" deployment.yaml
    
