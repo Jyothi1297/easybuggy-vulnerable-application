@@ -46,8 +46,8 @@ jobs:
     
     - name: Build Docker image
       run: | 
-       # docker build -t nadendla0107.azurecr.io/asg:${{ github.sha }} .
-       # docker push test0107.azurecr.io/asg:${{ github.sha }}
+       # docker build -t nani01071993.azurecr.io/asg:${{ github.sha }} .
+       # docker push nani01071993.azurecr.io/asg:${{ github.sha }}
          docker build -t asg:${{ steps.generate_tag.outputs.image_tag }} .
          docker tag asg:${{ steps.generate_tag.outputs.image_tag }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
@@ -57,4 +57,13 @@ jobs:
    #   run: |
    #     TAG=$(az acr repository show-tags --name test0107 --repository asg --orderby time_desc --top 1 --output tsv)
    #     echo "::set-output name=image_tag::$TAG"
+    - name: Azure CLI login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Set AKS context
+      run: az aks get-credentials --resource-group Naveen --name nanitest
+
+    - name: Deploy to AKS
+      run: kubectl apply -f deployment.yaml
