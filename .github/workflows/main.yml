@@ -44,5 +44,4 @@ jobs:
         echo "::set-output name=image_tag::$(echo $(git rev-parse --short HEAD))"
     - name: Push Docker image
       run: |
-        docker tag asg:latest test0107.azurecr.io/asg:${{ steps.build-and-deploy.outputs.image_tag }}
-        docker push test0107.azurecr.io/asg:${{ steps.build-and-deploy.outputs.image_tag }}
+        docker push  test0107.azurecr.io/asg:$IMAGE_TAG
