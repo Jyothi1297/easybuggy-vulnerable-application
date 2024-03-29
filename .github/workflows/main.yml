@@ -26,6 +26,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Generate Image Tag
+      id: generate_tag
+      run: echo "::set-output name=image_tag::$(git rev-parse --short HEAD)"
 
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
@@ -33,20 +36,14 @@ jobs:
         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-        #tags: '$(tag)'
+        
     
     - name: Build Docker image
-      run: |
-       docker build -t asg:latest .
-         export IMAGE_TAG=$(git rev-parse --short HEAD)
-         docker tag asg:latest test0107.azurecr.io/asg:$latest
-        #docker build -t test0107.azurecr.io/asg:${{ github.sha }} .
-        #docker push test0107.azurecr.io/asg:${{ github.sha }}
-        # tags: '$(tag)'
-        #docker build -t asg:latest .
-        #echo "::set-output name=image_tag::$(echo $(git rev-parse --short HEAD))"
-       #  docker tag myapp:latest yourusername/asg:$IMAGE_TAG
-         
-    - name: Push Docker image
-      run: |
-        docker push  test0107.azurecr.io/asg:$latest
+      run: | 
+       # docker build -t test0107.azurecr.io/asg:${{ github.sha }} .
+       # docker push test0107.azurecr.io/asg:${{ github.sha }}
+       docker build -t asg:${{ steps.generate_tag.outputs.image_tag }} .
+        docker tag asg:${{ steps.generate_tag.outputs.image_tag }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
+        
+   
