@@ -35,7 +35,7 @@ jobs:
 
     - name: Update deployment.yaml
       run: |
-        sed -i'' "s|image:[^:]*$|image: test0107.azurecr.io/asg:${{ steps.get_image_tag.outputs.image_tag }}|g" deployment.yaml
+        sed -i'' "s|image:[^:]*$|image: nadendla0107.azurecr.io/asg:${{ steps.get_image_tag.outputs.image_tag }}|g" deployment.yaml
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
@@ -46,7 +46,7 @@ jobs:
     
     - name: Build Docker image
       run: | 
-       # docker build -t test0107.azurecr.io/asg:${{ github.sha }} .
+       # docker build -t nadendla0107.azurecr.io/asg:${{ github.sha }} .
        # docker push test0107.azurecr.io/asg:${{ github.sha }}
          docker build -t asg:${{ steps.generate_tag.outputs.image_tag }} .
          docker tag asg:${{ steps.generate_tag.outputs.image_tag }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
