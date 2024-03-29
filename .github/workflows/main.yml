@@ -39,7 +39,7 @@ jobs:
       run: |
        docker build -t asg:latest .
          export IMAGE_TAG=$(git rev-parse --short HEAD)
-         docker tag asg:latest test0107.azurecr.io/asg:$IMAGE_TAG
+         docker tag asg:latest test0107.azurecr.io/asg:$latest
         #docker build -t test0107.azurecr.io/asg:${{ github.sha }} .
         #docker push test0107.azurecr.io/asg:${{ github.sha }}
         # tags: '$(tag)'
@@ -49,4 +49,4 @@ jobs:
          
     - name: Push Docker image
       run: |
-        docker push  test0107.azurecr.io/asg:$IMAGE_TAG
+        docker push  test0107.azurecr.io/asg:$latest
