@@ -45,5 +45,9 @@ jobs:
        docker build -t asg:${{ steps.generate_tag.outputs.image_tag }} .
         docker tag asg:${{ steps.generate_tag.outputs.image_tag }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/asg:${{ steps.generate_tag.outputs.image_tag }}
+
+    - name: Update Deployment YAML
+      run: |
+        sed -i "s/image:[^:]*$/image: test0107.azurecr.io/asg:${{ steps.generate_tag.outputs.image_tag }}/g" deployment.yaml
         
    
