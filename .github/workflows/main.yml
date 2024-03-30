@@ -29,13 +29,13 @@ jobs:
    # - name: Generate Image Tag
     #  id: generate_tag
     #  run: echo "::set-output name=image_tag::$(git rev-parse --short HEAD)"
-    - name: Generate Image Tag
-      id: generate_tag
-      run: echo "::set-output name=image_tag::latest"
+ #   - name: Generate Image Tag
+ #     id: generate_tag
+ #     run: echo "::set-output name=image_tag::latest"
 
-    - name: Update deployment.yaml
-      run: |
-        sed -i'' "s|image:[^:]*$|image: nadendla0107.azurecr.io/asg:${{ steps.get_image_tag.outputs.image_tag }}|g" deployment.yaml
+ #  - name: Update deployment.yaml
+  #    run: |
+  #      sed -i'' "s|image:[^:]*$|image: nani01071993.azurecr.io/asg:${{ steps.get_image_tag.outputs.image_tag }}|g" deployment.yaml
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
