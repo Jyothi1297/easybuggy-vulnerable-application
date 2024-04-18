@@ -19,6 +19,7 @@ jobs:
     - name: Run Trufflehog scan
       run: |
         trufflehog --json --regex --entropy=False . > trufflehog_report.json
+        sh 'cat trufflehog_report.json
       continue-on-error: true
 
     - name: Upload Trufflehog report
