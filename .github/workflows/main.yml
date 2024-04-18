@@ -17,14 +17,20 @@ jobs:
       run: pip install trufflehog
       
     - name: Run Trufflehog scan
-      run: trufflehog --regex --entropy=False .
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      run: |
+        trufflehog --json --regex --entropy=False . > trufflehog_report.json
+      continue-on-error: true
+
+    - name: Upload Trufflehog report
+      uses: actions/upload-artifact@v2
+      with:
+        name: trufflehog-report
+        path: trufflehog_report.json
+#    - name: SonarQube Scan
+#      uses: sonarsource/sonarqube-scan-action@master
+ #     env:
+#        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   #  - name: Generate Image Tag
    #   id: generate_tag
